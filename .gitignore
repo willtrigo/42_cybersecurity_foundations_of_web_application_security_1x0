@@ -1,0 +1,7 @@
+err.log
+
+.venv/
+*.pyc
+__pycache__/
+
+ssti_scan.log
