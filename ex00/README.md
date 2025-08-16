@@ -67,6 +67,20 @@ curl http://localhost:5000/
 
 2. **Expected result**: Current user's ID information
 
+### Stopping the Application
+
+```bash
+# To stop the Docker container
+docker kill cyber1x0100-template-injection-app-1
+```
+
+### Troubleshooting
+
+- **Port 5000 already in use**: Stop other services using port 5000
+- **Docker not found**: Install Docker and ensure it's running
+- **Permission denied on start.sh**: Run `chmod +x start.sh`
+- **Cannot access localhost:5000**: Check firewall settings and Docker configuration
+
 ## Vulnerability Classification
 
 ### OWASP Classification
