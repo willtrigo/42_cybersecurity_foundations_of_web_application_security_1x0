@@ -48,6 +48,11 @@ source ex00/.venv/bin/activate
 python3 ex00/ssti_exploit.py http://localhost:5000/
 ```
 
+```bash
+# To save the report
+python3 ex00/ssti_exploit.py http://localhost:5000 --output report.txt
+```
+
 ## Payload Types Tested
 
 ### 1. Basic Template Evaluation

